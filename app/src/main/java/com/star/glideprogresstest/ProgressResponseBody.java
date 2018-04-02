@@ -22,6 +22,7 @@ public class ProgressResponseBody extends ResponseBody {
     private ProgressListener mProgressListener;
 
     public ProgressResponseBody(String url, ResponseBody responseBody) {
+
         mResponseBody = responseBody;
         mProgressListener = ProgressInterceptor.getListenerMap().get(url);
     }

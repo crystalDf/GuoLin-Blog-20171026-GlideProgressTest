@@ -14,7 +14,7 @@ import java.io.InputStream;
 import okhttp3.OkHttpClient;
 
 @GlideModule
-public class MyGlideModule extends AppGlideModule {
+public class MyAppGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
@@ -23,7 +23,7 @@ public class MyGlideModule extends AppGlideModule {
         builder.addInterceptor(new ProgressInterceptor());
         OkHttpClient okHttpClient = builder.build();
 
-        registry.append(GlideUrl.class, InputStream.class,
+        registry.replace(GlideUrl.class, InputStream.class,
                 new OkHttpGlideUrlLoader.Factory(okHttpClient));
     }
 }

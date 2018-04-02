@@ -1,14 +1,21 @@
 package com.star.glideprogresstest;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.io.IOException;
 
@@ -23,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mLoadImage;
     private ImageView mImageView;
 
+    private ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         mLoadImage = findViewById(R.id.load_image_button);
         mImageView = findViewById(R.id.image_view);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         mLoadImage.setOnClickListener(view -> loadBingPic());
     }
@@ -51,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> {
 
+                    ProgressInterceptor.addListener(bingPic,
+                            progress -> mProgressBar.setProgress(progress));
+
                     RequestOptions requestOptions =
                             new RequestOptions()
                                     .placeholder(R.drawable.emma_loading)
@@ -62,7 +75,22 @@ public class MainActivity extends AppCompatActivity {
                             .with(MainActivity.this)
                             .load(bingPic)
                             .apply(requestOptions)
-                            .into(mImageView);
+                            .into(new DrawableImageViewTarget(mImageView) {
+
+                                @Override
+                                public void onLoadStarted(@Nullable Drawable placeholder) {
+                                    super.onLoadStarted(placeholder);
+                                    mProgressBar.setVisibility(View.VISIBLE);
+                                }
+
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    super.onResourceReady(resource, transition);
+                                    mProgressBar.setVisibility(View.GONE);
+
+                                    ProgressInterceptor.removeListener(bingPic);
+                                }
+                            });
                 });
             }
         });
