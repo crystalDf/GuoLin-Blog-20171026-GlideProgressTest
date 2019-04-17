@@ -1,10 +1,10 @@
 package com.star.glideprogresstest;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.IOException;
 
+import androidx.annotation.Nullable;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import okio.Buffer;

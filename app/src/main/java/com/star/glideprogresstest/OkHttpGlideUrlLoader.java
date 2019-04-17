@@ -1,8 +1,5 @@
 package com.star.glideprogresstest;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
@@ -11,6 +8,8 @@ import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 
 import java.io.InputStream;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import okhttp3.OkHttpClient;
 
 public class OkHttpGlideUrlLoader implements ModelLoader<GlideUrl, InputStream> {
